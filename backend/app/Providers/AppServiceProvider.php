@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\ServiceProvider;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     */
+    public function register(): void
+    {
+        //
+    }
+
+    /**
+     * Bootstrap any application services.
+     */
+    public function boot(): void
+    {
+        // Las respuestas de la API van sin el envoltorio {"data": ...}.
+        JsonResource::withoutWrapping();
+
+        RateLimiter::for('login', fn (Request $request) => Limit::perMinute(10)
+            ->by(mb_strtolower((string) $request->input('username')).'|'.$request->ip())
+            ->response(fn () => response()->json([
+                'message' => 'Demasiados intentos. Espere un minuto e intente de nuevo.',
+            ], 429)));
+    }
+}

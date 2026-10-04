@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --color-brand-50: #fff7ed;
+  --color-brand-100: #ffedd5;
+  --color-brand-500: #f97316;
+  --color-brand-600: #ea580c;
+  --color-brand-700: #c2410c;
+}
+
+@layer base {
+  html {
+    /* Letra un poco más grande que lo normal: se lee de lejos y con prisa. */
+    font-size: 17px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-slate-100 text-slate-900 antialiased;
+  }
+
+  button {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  :focus-visible {
+    @apply outline-4 outline-offset-2 outline-sky-500;
+  }
+}
+
+@keyframes attention {
+  0%, 100% { box-shadow: 0 0 0 0 rgb(22 163 74 / 0.55); }
+  50% { box-shadow: 0 0 0 10px rgb(22 163 74 / 0); }
+}
+
+.animate-attention {
+  animation: attention 1.6s ease-in-out infinite;
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-toast-in {
+  animation: toast-in 180ms ease-out;
+}
